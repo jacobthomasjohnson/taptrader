@@ -4,6 +4,9 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import useStore from "../store/useStore";
 
+const formatNumber = (num) =>
+  typeof num === "number" ? num.toFixed(2) : "0.00";
+
 export const Stats = () => {
   const { cash, level, holdings, trades, profitLoss } = useStore(
     (state) => state
@@ -14,19 +17,24 @@ export const Stats = () => {
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
+
   useEffect(() => {
-    expandedStats.current
-      ? setExpandedHeight(expandedStats.current.scrollHeight)
-      : setExpandedHeight(0);
+    if (expandedStats.current) {
+      setExpandedHeight(expandedStats.current.scrollHeight);
+    } else {
+      setExpandedHeight(0);
+    }
   }, []);
+
   useEffect(() => {
-    // Probably add animations to stats here
+    // Possibly add animations to stats here
   }, [cash, level, holdings, trades, profitLoss]);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex p-3 w-full justify-between border border-[#333333] rounded-lg">
         <div>CASH</div>
-        <div className="text-[#99E5AC]">${cash}</div>
+        <div className="text-[#99E5AC]">${formatNumber(cash)}</div>
       </div>
 
       <div
@@ -43,18 +51,22 @@ export const Stats = () => {
         </div>
         <div className="flex p-3 w-full justify-between border border-[#333333] rounded-lg">
           <div>HOLDINGS</div>
-          <div className="text-[#99E5AC]">${holdings}</div>
+          <div className="text-[#99E5AC]">${formatNumber(holdings)}</div>
         </div>
         <div className="flex p-3 w-full justify-between border border-[#333333] rounded-lg">
           <div>TRADES</div>
-          <div className="">{trades}</div>
+          <div>{trades}</div>
         </div>
         <div className="flex p-3 w-full justify-between border border-[#333333] rounded-lg">
           <div>P/L</div>
-          <div style={{
-            color: profitLoss > 0 ? "#99E5AC" : "#FF4D4D",
-          }}>
-            {profitLoss > 0 ? "+$" + profitLoss : "-$" + Math.abs(profitLoss)}
+          <div
+            style={{
+              color: profitLoss > 0 ? "#99E5AC" : "#FF4D4D",
+            }}
+          >
+            {profitLoss > 0
+              ? "+$" + formatNumber(profitLoss)
+              : "-$" + formatNumber(Math.abs(profitLoss))}
           </div>
         </div>
       </div>

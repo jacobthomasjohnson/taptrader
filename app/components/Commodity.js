@@ -18,6 +18,8 @@ export const Commodity = ({ commodityName }) => {
     initialRefreshTime,
   } = commodity;
   const refreshCommodity = useStore((state) => state.refreshCommodity);
+  const buyCommodity = useStore((state) => state.buyCommodity);
+  const sellCommodity = useStore((state) => state.sellCommodity);
 
   // Local countdown state, initialized to the store value
   const [localCountdown, setLocalCountdown] = useState(timeTillRefresh);
@@ -87,10 +89,10 @@ export const Commodity = ({ commodityName }) => {
       </div>
       <div className="w-full h-[1px] bg-[#333333]" />
       <div className="flex w-full gap-2 my-1">
-        <button className="transition-all duration-75 active:scale-95 hover:cursor-pointer hover:bg-[#efefef] w-1/2 p-3 flex items-center justify-center bg-[#E2E2E2] text-background rounded-md">
+        <button onClick={() => buyCommodity(commodityName)} className="transition-all duration-75 active:scale-95 hover:cursor-pointer hover:bg-[#efefef] w-1/2 p-3 flex items-center justify-center bg-[#E2E2E2] text-background rounded-md">
           BUY
         </button>
-        <button className="transition-all duration-75 active:scale-95 hover:cursor-pointer hover:bg-[#a8f2ba] w-1/2 p-3 flex items-center justify-center bg-[#99E5AC] text-background rounded-md">
+        <button onClick={() => sellCommodity(commodityName)} className="transition-all duration-75 active:scale-95 hover:cursor-pointer hover:bg-[#a8f2ba] w-1/2 p-3 flex items-center justify-center bg-[#99E5AC] text-background rounded-md">
           SELL
         </button>
       </div>

@@ -3,12 +3,10 @@ import { create } from "zustand";
 export const useStore = create((set, get) => ({
   cash: 1000,
   level: 1,
-  holdings: 0,
   trades: 0,
-  profitLoss: 20,
+  // profitLoss now reflects realized profit/loss from closed trades
+  profitLoss: 0,
 
-  // Optionally, you could add an "initialRefreshTime" to each commodity if you
-  // want a consistent reset value separate from the current countdown.
   commodities: [
     {
       commodityName: "GOLD",
@@ -16,76 +14,106 @@ export const useStore = create((set, get) => ({
       initialRefreshTime: 4,
       timeTillRefresh: 4,
       currentPrice: 184,
-      youOwn: 24,
-      avgBuyPrice: 212,
+      youOwn: 0,
+      avgBuyPrice: 0,
       recentTrend: "up",
     },
     {
       commodityName: "SILVER",
-      volatility: 0.05,
-      initialRefreshTime: 6,
-      timeTillRefresh: 6,
+      volatility: 0.1,
+      initialRefreshTime: 4,
+      timeTillRefresh: 4,
       currentPrice: 28,
-      youOwn: 27,
-      avgBuyPrice: 33,
+      youOwn: 0,
+      avgBuyPrice: 0,
       recentTrend: "down",
     },
     {
       commodityName: "PLATINUM",
       volatility: 0.03,
-      initialRefreshTime: 33,
-      timeTillRefresh: 11,
-      currentPrice: 11,
-      youOwn: 1,
-      avgBuyPrice: 250,
+      initialRefreshTime: 4,
+      timeTillRefresh: 4,
+      currentPrice: 750,
+      youOwn: 0,
+      avgBuyPrice: 0,
       recentTrend: "up",
     },
     {
       commodityName: "DIAMOND",
       volatility: 0.01,
-      initialRefreshTime: 14,
-      timeTillRefresh: 14,
+      initialRefreshTime: 4,
+      timeTillRefresh: 4,
       currentPrice: 2473,
-      youOwn: 3,
-      avgBuyPrice: 2830,
+      youOwn: 0,
+      avgBuyPrice: 0,
       recentTrend: "down",
     },
   ],
 
-  purchaseCommodity: (commodityName, amount) =>
+  // BUY: update cash and holdings (average cost is recalculated), profitLoss is not changed.
+  buyCommodity: (commodityName) =>
     set((state) => {
-      const commodities = state.commodities.map((commodity) => {
-        if (commodity.commodityName === commodityName) {
-          const newYouOwn = commodity.youOwn + amount;
-          return {
-            ...commodity,
-            youOwn: newYouOwn,
-            avgBuyPrice:
-              (commodity.avgBuyPrice * commodity.youOwn +
-                commodity.currentPrice * amount) /
-              newYouOwn,
-          };
-        }
-        return commodity;
-      });
-      return { commodities };
+      const commodity = state.commodities.find(
+        (c) => c.commodityName === commodityName
+      );
+      if (!commodity) return {};
+      const cost = commodity.currentPrice;
+      if (state.cash < cost) {
+        console.error("Not enough cash to buy this commodity");
+        return {};
+      }
+      const newCash = state.cash - cost;
+      const newQuantity = commodity.youOwn + 1;
+      // Use weighted average to recalc the average cost per unit
+      const newAvgBuyPrice =
+        newQuantity === 0
+          ? 0
+          : (commodity.avgBuyPrice * commodity.youOwn + cost) / newQuantity;
+      const newCommodities = state.commodities.map((c) =>
+        c.commodityName === commodityName
+          ? { ...c, youOwn: newQuantity, avgBuyPrice: newAvgBuyPrice }
+          : c
+      );
+      return {
+        cash: newCash,
+        trades: state.trades + 1,
+        commodities: newCommodities,
+        // profitLoss remains unchanged (unrealized cost basis)
+      };
     }),
 
-  sellCommodity: (commodityName, amount) =>
+  // SELL: update cash, reduce holdings, and update profitLoss with realized gain/loss.
+  sellCommodity: (commodityName) =>
     set((state) => {
-      const commodities = state.commodities.map((commodity) => {
-        if (commodity.commodityName === commodityName) {
-          const newYouOwn = commodity.youOwn - amount;
-          if (newYouOwn < 0) {
-            console.error("Not enough commodity to sell");
-            return commodity;
-          }
-          return { ...commodity, youOwn: newYouOwn };
-        }
-        return commodity;
-      });
-      return { commodities };
+      const commodity = state.commodities.find(
+        (c) => c.commodityName === commodityName
+      );
+      if (!commodity) return {};
+      if (commodity.youOwn <= 0) {
+        console.error("Not enough commodity to sell");
+        return {};
+      }
+      const sellPrice = commodity.currentPrice;
+      // Realized profit (or loss) for 1 unit sold:
+      const realizedProfit = sellPrice - commodity.avgBuyPrice;
+      const newCash = state.cash + sellPrice;
+      const newQuantity = commodity.youOwn - 1;
+      // If no more units remain, you can reset avgBuyPrice to 0
+      const newAvgBuyPrice = newQuantity === 0 ? 0 : commodity.avgBuyPrice;
+      const newCommodities = state.commodities.map((c) =>
+        c.commodityName === commodityName
+          ? { ...c, youOwn: newQuantity, avgBuyPrice: newAvgBuyPrice }
+          : c
+      );
+      return {
+        cash: newCash,
+        trades: state.trades + 1,
+        commodities: newCommodities,
+        profitLoss: state.profitLoss + realizedProfit,
+      };
     }),
+
+  // Other functions remain the same
 
   updateCommodityPrice: (commodityName, newPrice) =>
     set((state) => {
@@ -116,14 +144,11 @@ export const useStore = create((set, get) => ({
       };
     }),
 
-  // This function updates the price of a single commodity when its timer hits 0.
   refreshCommodity: (commodityName) =>
     set((state) => {
       const commodities = state.commodities.map((commodity) => {
         if (commodity.commodityName === commodityName) {
           const volatility = commodity.volatility || 0.05;
-          // Compute a random factor based on volatility.
-          // Optionally, you can add a global factor if you want a unified market movement.
           const randomChange = Math.random() * 2 * volatility - volatility;
           const newPrice = parseFloat(
             (commodity.currentPrice * (1 + randomChange)).toFixed(2)
@@ -132,7 +157,6 @@ export const useStore = create((set, get) => ({
             ...commodity,
             currentPrice: newPrice,
             recentTrend: newPrice > commodity.currentPrice ? "up" : "down",
-            // Reset the timer to its initial value.
             timeTillRefresh: commodity.initialRefreshTime,
           };
         }
@@ -141,8 +165,7 @@ export const useStore = create((set, get) => ({
       return { commodities };
     }),
 
-  // Function for global market updates (if needed)
-  updateMarketFlow: () => {
+  updateMarketFlow: () =>
     set((state) => {
       const globalFactor = Math.random() * 0.01 - 0.005;
       const commodities = state.commodities.map((commodity) => {
@@ -159,10 +182,8 @@ export const useStore = create((set, get) => ({
         };
       });
       return { commodities };
-    });
-  },
+    }),
 
-  // Periodic global market update function
   startMarketFlowUpdates: (interval = 5000) => {
     const updateFlow = () => {
       useStore.getState().updateMarketFlow();
@@ -171,8 +192,7 @@ export const useStore = create((set, get) => ({
     return () => clearInterval(id);
   },
 
-  // Original random update for all commodities (if needed)
-  randomCommodityPriceUpdate: () => {
+  randomCommodityPriceUpdate: () =>
     set((state) => {
       const commodities = state.commodities.map((commodity) => {
         const randomChange =
@@ -187,8 +207,7 @@ export const useStore = create((set, get) => ({
         };
       });
       return { commodities };
-    });
-  },
+    }),
 }));
 
 export default useStore;
