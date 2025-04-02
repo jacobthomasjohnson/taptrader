@@ -9,7 +9,7 @@ import Header from './components/Header';
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-screen w-full px-6 text-sm font-light overflow-hidden">
+    <div className="flex flex-col h-screen w-full px-6 text-sm font-normal overflow-hidden xl:w-[1100px] xl:mx-auto">
       {/* Header Section */}
       <Header />
       {/* Stats Section */}
