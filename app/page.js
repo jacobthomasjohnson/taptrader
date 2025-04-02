@@ -4,7 +4,7 @@ import { ArrowDown, ArrowUp } from 'lucide-react';
 import Market from './components/Market';
 import MarketHeader from './components/MarketHeader';
 import Stats from './components/Stats';
-import Upgrades from './components/Upgrades';
+import Menu from './components/Menu';
 import Header from './components/Header';
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
       {/* Market Section */}
       <Market />
       {/* Upgrades Button */}
-      <Upgrades />
+      <Menu />
     </div>
   );
 }

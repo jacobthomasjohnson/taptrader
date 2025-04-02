@@ -11,8 +11,8 @@ export const useStore = create((set, get) => ({
     {
       commodityName: "GOLD",
       volatility: 0.02,
-      initialRefreshTime: 4,
-      timeTillRefresh: 4,
+      initialRefreshTime: 10,
+      timeTillRefresh: 10,
       currentPrice: 184,
       youOwn: 0,
       avgBuyPrice: 0,
@@ -21,8 +21,8 @@ export const useStore = create((set, get) => ({
     {
       commodityName: "SILVER",
       volatility: 0.1,
-      initialRefreshTime: 4,
-      timeTillRefresh: 4,
+      initialRefreshTime: 10,
+      timeTillRefresh: 10,
       currentPrice: 28,
       youOwn: 0,
       avgBuyPrice: 0,
@@ -31,8 +31,8 @@ export const useStore = create((set, get) => ({
     {
       commodityName: "PLATINUM",
       volatility: 0.03,
-      initialRefreshTime: 4,
-      timeTillRefresh: 4,
+      initialRefreshTime: 10,
+      timeTillRefresh: 10,
       currentPrice: 750,
       youOwn: 0,
       avgBuyPrice: 0,
@@ -41,8 +41,8 @@ export const useStore = create((set, get) => ({
     {
       commodityName: "DIAMOND",
       volatility: 0.01,
-      initialRefreshTime: 4,
-      timeTillRefresh: 4,
+      initialRefreshTime: 10,
+      timeTillRefresh: 10,
       currentPrice: 2473,
       youOwn: 0,
       avgBuyPrice: 0,
@@ -208,6 +208,10 @@ export const useStore = create((set, get) => ({
       });
       return { commodities };
     }),
+
+    headerHeight: 0,
+    setHeaderHeight: (height) => set({ headerHeight: height }),
+
 }));
 
 export default useStore;
