@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export const useStore = create((set, get) => ({
+
   cash: 1000,
   level: 1,
   trades: 0,
@@ -75,6 +76,8 @@ export const useStore = create((set, get) => ({
       });
       return { commodities };
     }),
+
+  canAfford: (price) => get().cash >= price,
 
   headerHeight: 0,
   setHeaderHeight: (height) => set({ headerHeight: height }),
