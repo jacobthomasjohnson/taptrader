@@ -38,7 +38,7 @@ export const Stats = () => {
       </div>
 
       <div
-        className="h-full transition-all duration-250 flex flex-col gap-2"
+        className="h-full transition-all flex flex-col gap-2"
         ref={expandedStats}
         style={{
           height: expanded ? expandedHeight : 0,

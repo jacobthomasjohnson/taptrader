@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import useStore from "../store/useStore";
 
-export const Toggle = ({ onToggle }) => {
+export const Toggle = ({ option }) => {
+      const setOption = useStore((state) => state.setOption);
+      const getOption = useStore((state) => state.getOption);
       const [isToggled, setIsToggled] = useState(false);
 
       const doToggle = () => {
+            const optionCurrentValue = getOption(option);
+            setOption(option, !optionCurrentValue);
             setIsToggled(!isToggled);
       };
 

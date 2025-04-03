@@ -16,6 +16,11 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+/* Force any Tailwind transition class to use a specific easing */
+[class*="transition"] {
+  transition-timing-function: cubic-bezier(0, 1, 0, 1) !important;
+}
+
 /* Hide scrollbar but allow scrolling */
 .hide-scrollbar {
   scrollbar-width: none; /* Firefox */

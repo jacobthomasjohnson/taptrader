@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { useState } from "react";
 import useStore from "../store/useStore";
 import Toggle from "./Toggle";
@@ -16,13 +16,15 @@ export const Menu = () => {
     <div className="flex flex-col justify-center items-center">
       {/* Toggle button remains in normal flow, but with a higher z-index */}
       <div className="relative w-screen items-center justify-center bg-background z-60  flex gap-2 p-6">
-        <div onClick={toggleExpanded} className="transition-all duration-75 active:scale-95 hover:cursor-pointer hover:underline flex gap-1 items-center">
-          {expanded ? "CLOSE MENU" : "OPEN MENU"}
-          {expanded ? (
-            <ArrowDown width={12} height={12} />
-          ) : (
-            <ArrowUp width={12} height={12} />
+        <div onClick={toggleExpanded} className="transition-all active:scale-95 hover:cursor-pointer hover:underline flex gap-1 items-center">
+          {expanded ? "" : (
+          
+            <>
+            OPEN MENU<ArrowUp width={12} height={12} />
+            </>
+        
           )}
+          
         </div>
       </div>
 
@@ -34,19 +36,27 @@ export const Menu = () => {
         }}
       >
         <div className="p-4">
-          <h2 className="text-xl text-center block border-b border-[#333333] pb-3">Menu</h2>
+          <h2 className="relative text-xl text-center block border-b border-[#333333] pb-3">Options<div className="absolute right-0 top-0 hover:cursor-pointer text-[#b0b0b0] hover:text-foreground" onClick={toggleExpanded} style={{
+          }}>✕</div></h2>
           <div className="flex w-full flex-col gap-2 mt-3">
           <div className="flex justify-between w-full items-center py-3">
               <>Enable Compact View</>
-              <Toggle />
+              <Toggle option="enableCompactView" />
             </div>
             <div className="flex justify-between w-full items-center py-3">
               <>Disable Animations</>
-              <Toggle />
+              <Toggle option="disableAnimations" />
             </div>
             <div className="flex justify-between w-full items-center py-3">
               <>Disable Sounds</>
-              <Toggle />
+              <Toggle option="disableSounds" />
+            </div>
+          </div>
+          <h2 className="relative text-xl text-center block border-b border-[#333333] pb-3">Upgrades</h2>
+          <div className="flex w-full flex-col gap-2 mt-3">
+          <div className="flex justify-between w-full items-center py-3">
+              <>Faster Market Trading</>
+              <Toggle option="fasterMarketTrading" />
             </div>
           </div>
           {/* Add additional content as needed */}
