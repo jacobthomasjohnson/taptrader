@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tap Trader
 
-## Getting Started
+**Tap Trader** is an idle-meets-markets game: prices tick, you tap, fortunes swing.  
+Buy low, sell high, and expand your portfolio while you sleep.
 
-First, run the development server:
+- **Live commodity ticker** with volatility curves that feel *almost* real.
+- **One-tap trades** + instant P/L readout—no spreadsheets required.
+- **Upgrade tree** boosts leverage, unlocks new markets, and automates clicks.
+- **Offline earnings** so your balance grows even when the tab is closed.
+- **Local persistence** (browser `localStorage`)—no sign-up friction.
+
+| Stack | Why |
+|-------|-----|
+| Next.js 14 (App Router) | Fast front-end & API routes |
+| Tailwind CSS | Utility-first UI you can theme on the fly |
+| Zustand | Minimal global state for prices, wallet, upgrades |
+| Framer Motion | Snappy cash-register animations |
+
+## Quick Start
+
+# 1. Clone
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourhandle/tap-trader.git
+cd tap-trader
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+# 3. Start dev server
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 4. Launch the server
+Navigate to http://localhost:3000/
 
-## Learn More
+# 5. Enjoy the simulation!
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Roadmap
+Dynamic news boosts that temporarily spike prices
+More accurate pricing, flexible volitality
+Prestige mechanics for late-game replayability
+Simple mobile PWA wrapper for offline play
+Rewards systems
