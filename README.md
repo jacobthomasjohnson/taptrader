@@ -1,6 +1,6 @@
 # Tap Trader
 
-**Tap Trader** is an idle-meets-markets game: prices tick, you tap, fortunes swing.  
+**Tap Trader** is an idle-meets-markets game: prices tick, you tap, fortunes swing.
 Buy low, sell high, and expand your portfolio while you sleep.
 
 - **Live commodity ticker** with volatility curves that feel *almost* real.
@@ -40,9 +40,4 @@ Navigate to http://localhost:3000/
 
 # 5. Enjoy the simulation!
 
-Roadmap
-Dynamic news boosts that temporarily spike prices
-More accurate pricing, flexible volitality
-Prestige mechanics for late-game replayability
-Simple mobile PWA wrapper for offline play
-Rewards systems
+## Roadmap
