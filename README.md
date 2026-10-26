@@ -21,8 +21,8 @@ Buy low, sell high, and expand your portfolio while you sleep.
 # 1. Clone
 
 ```bash
-git clone https://github.com/yourhandle/tap-trader.git
-cd tap-trader
+git clone https://github.com/jacobthomasjohnson/taptrader.git
+cd taptrader
 ```
 
 # 2. Install dependencies
